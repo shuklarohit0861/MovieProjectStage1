@@ -12,7 +12,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 /**
- * Created by thero on 26-07-2016.
+ * Created by rohit shukla on 26-07-2016.
  */
 public class AdapterMovies extends ArrayAdapter<MoviesDetails> {
 
