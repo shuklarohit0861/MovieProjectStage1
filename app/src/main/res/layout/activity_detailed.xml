@@ -15,7 +15,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="false">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -34,7 +35,7 @@
             android:layout_height="wrap_content"
 
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
+            tools:text="Large Text"
             android:id="@+id/movie_title_text_view" />
 
         <TextView
@@ -49,7 +50,7 @@
             android:layout_height="wrap_content"
 
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
+            tools:text="Medium Text"
             android:id="@+id/OverView_text_view" />
 
         <TextView
@@ -63,7 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Small Text"
+            tools:text="Small Text"
             android:id="@+id/release_date_textView"
             />
 
@@ -78,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Small Text"
+            tools:text="Small Text"
             android:id="@+id/text_view_votes" />
     </LinearLayout>
 

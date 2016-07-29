@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private AdapterMovies adapterMovies;
     GridView gridView;
     private ArrayList<MoviesDetails> movieData = null;
+    String moviePref;
+    SharedPreferences preferences;
 
 
     static  final String MOVIE_DATA = "MOVIE-DATA";
@@ -43,16 +45,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v("OnCreate","ON");
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         gridView = (GridView)findViewById(R.id.movieTitle_main);
+         preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+         moviePref = preferences.getString(getString(R.string.pref_key_value),getString(R.string.pref_default_value));
 
-        if(savedInstanceState != null) {
+        if(savedInstanceState != null ) {
             movieData = savedInstanceState.getParcelableArrayList(MOVIE_DATA);
-            adapterMovies = new AdapterMovies(getApplicationContext(), movieData);
-
-            gridView.setAdapter(adapterMovies);
+            if(movieData != null) {
+                adapterMovies = new AdapterMovies(getApplicationContext(), movieData);
+                gridView.setAdapter(adapterMovies);
+            }
         }
 
        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -82,10 +88,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        Log.v("OnStart","ON");
         if(checkInternet(getApplicationContext())== true)
         {
 
-            updateMoviedata();
+            String moviePrefChange =  preferences.getString(getString(R.string.pref_key_value),getString(R.string.pref_default_value));
+
+            if(!moviePrefChange.equals(moviePref)||movieData == null) {
+                updateMoviedata();
+            }
         }
         else
         {
@@ -96,22 +108,21 @@ public class MainActivity extends AppCompatActivity {
     protected void updateMoviedata()
     {
         FatchMovieData fatch = new FatchMovieData();
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String moviePref = preferences.getString(getString(R.string.pref_key_value),getString(R.string.pref_default_value));
+        moviePref = preferences.getString(getString(R.string.pref_key_value),getString(R.string.pref_default_value));
         fatch.execute(moviePref);
+        Log.v("NETWORK CALL","Network call is made");
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(MOVIE_DATA,movieData);
+        if(movieData != null) {
+            Log.v("data is saved","On save");
+            outState.putParcelableArrayList(MOVIE_DATA, movieData);
+        }
     }
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        movieData = savedInstanceState.getParcelableArrayList(MOVIE_DATA);
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
